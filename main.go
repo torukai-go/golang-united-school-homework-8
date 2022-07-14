@@ -27,12 +27,12 @@ func main() {
 func Perform(args Arguments, writer io.Writer) error {
 	oper, ok := args["operation"]
 	if !ok || len(oper) == 0 {
-		return fmt.Errorf("specify -operation argument")
+		return fmt.Errorf("-operation flag has to be specified")
 	}
 
 	filename, ok := args["fileName"]
 	if !ok || len(filename) == 0 {
-		return fmt.Errorf("specify -fileName argument")
+		return fmt.Errorf("-fileName flag has to be specified")
 	}
 
 	switch oper {
@@ -46,7 +46,7 @@ func Perform(args Arguments, writer io.Writer) error {
 		return remove(filename, args["id"], writer)
 	}
 
-	return fmt.Errorf("Invalid operation: %s ", oper)
+	return fmt.Errorf("Operation %s not allowed!", oper)
 }
 
 func parseArgs() Arguments {
@@ -127,7 +127,7 @@ func writeItems(filename string, users []User) error {
 // operations
 func add(filename string, itemData string, writer io.Writer) error {
 	if len(itemData) == 0 {
-		return fmt.Errorf("specify -item argument")
+		return fmt.Errorf("-item flag has to be specified")
 	}
 
 	users, err := readItems(filename)
@@ -143,7 +143,7 @@ func add(filename string, itemData string, writer io.Writer) error {
 
 	for _, v := range users {
 		if v.Id == user.Id {
-			writer.Write([]byte(fmt.Sprintf("id %s is already taken", user.Id)))
+			writer.Write([]byte(fmt.Sprintf("Item with id %s already exists", user.Id)))
 			return nil
 		}
 	}
@@ -163,7 +163,7 @@ func list(filename string, writer io.Writer) error {
 
 func findById(filename string, id string, writer io.Writer) error {
 	if len(id) == 0 {
-		return fmt.Errorf("specify -id argument")
+		return fmt.Errorf("-id flag has to be specified")
 	}
 
 	items, err := readItems(filename)
@@ -187,7 +187,7 @@ func findById(filename string, id string, writer io.Writer) error {
 
 func remove(filename string, id string, writer io.Writer) error {
 	if len(id) == 0 {
-		return fmt.Errorf("specify -id argument")
+		return fmt.Errorf("-id flag has to be specified")
 	}
 
 	items, err := readItems(filename)
